@@ -3,13 +3,19 @@ __author__ = 'jiayingyu'
 # We will need the following module to generate randomized lost packets
 import random
 from socket import *
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--port", dest="port", type=int, action='store', help="set UDP port", default=12000)
+args=parser.parse_args()
 
 # Create a UDP socket
 # Notice the use of SOCK_DGRAM for UDP packets
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 # Assign IP address and port number to socket
-serverSocket.bind(('', 12000))
-print("Started UDP server on port 12000")
+serverSocket.bind(('', args.port))
+print("Started UDP server on port", args.port)
 while True:
     # Generate random number in the range of 0 to 10
     rand = random.randint(0, 10)
