@@ -5,39 +5,6 @@ You will first study a simple Internet ping server written in the Python, and im
 
 You are given the complete code for the Ping server below. Your task is to write the Ping client.
 
-##Server Code
-The following code fully implements a ping server. You need to compile and run this code before running your client program. You do not need to modify this code.
-
-In this server code, 30% of the client’s packets are simulated to be lost. You should study this code carefully, as it will help you write your ping client.
-
-```python
-# UDPPingerServer.py
-# We will need the following module to generate randomized lost packets
-
-import random
-from socket import *
-
-# Create a UDP socket
-# Notice the use of SOCK_DGRAM for UDP packets
-serverSocket = socket(AF_INET, SOCK_DGRAM)
-# Assign IP address and port number to socket
-serverSocket.bind(('', 12000))
-print("Started UDP server on port 12000")
-while True:
-    # Generate random number in the range of 0 to 10
-    rand = random.randint(0, 10)
-    # Receive the client packet along with the address it is coming from
-    message, address = serverSocket.recvfrom(1024)
-    # Capitalize the message from the client
-    message = message.upper()
-    # If rand is less is than 4, we consider the packet lost and do not respond
-    if rand < 4:
-        continue
-    # Otherwise, the server responds
-    serverSocket.sendto(message, address)
-```
-The server sits in an infinite loop listening for incoming UDP packets. When a packet comes in and if a randomized integer is greater than or equal to 4, the server simply capitalizes the encapsulated data and sends it back to the client.
-
 ##Packet Loss
 UDP provides applications with an unreliable transport service. Messages may get lost in the network due to router queue overflows, faulty hardware or some other reasons. Because packet loss is rare or even non-existent in typical campus networks, the server in this lab injects artificial loss to simulate the effects of network packet loss. The server creates a variable randomized integer which determines whether a particular incoming packet is lost or not.
 
